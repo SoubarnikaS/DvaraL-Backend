@@ -1,21 +1,18 @@
 package com.sdp.dvaral.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class HallImages {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int imageID;
+    private Long imageID;
 
     private String imageName;
 
@@ -25,4 +22,7 @@ public class HallImages {
 
     @ManyToOne
     private Halls halls;
+
+    public HallImages(String s) {
+    }
 }

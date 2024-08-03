@@ -1,10 +1,7 @@
 package com.sdp.dvaral.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,6 +10,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Halls {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +21,7 @@ public class Halls {
     private String hallLocation;
     private String hallDescription;
     private String hallStatus;
-    private String hallRating;
+    private Float hallRating;
     private String hallAddress;
     private String hallContact;
     private int capacity;
