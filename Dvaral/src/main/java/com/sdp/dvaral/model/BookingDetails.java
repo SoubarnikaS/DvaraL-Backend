@@ -27,6 +27,10 @@ public class BookingDetails {
     private String eventType;
     private String specialRequests;
 
+
+    @ManyToOne
+    private Users users;
+
     @ManyToOne
     private Halls halls;
 }

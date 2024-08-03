@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -24,13 +26,13 @@ public class Users {
     private String userRole;
 
     @OneToMany(mappedBy = "users")
-    private List<Halls> halls;
+    private List<BookingDetails> bookingDetails;
 
     @OneToMany(mappedBy = "users")
     private List<Reviews> reviews;
 
-    @ElementCollection
-    private List<UserActions> userActionsList;
+    @ManyToMany
+    private List<FavoriteHalls> favoriteHalls;
 
 
 

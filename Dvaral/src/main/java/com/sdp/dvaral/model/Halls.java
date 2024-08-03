@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.catalina.User;
 
 import java.util.List;
 
@@ -27,21 +26,17 @@ public class Halls {
     private String hallRating;
     private String hallAddress;
     private String hallContact;
+    private int capacity;
+    private double hallPrice;
 
-    @ElementCollection
+    @OneToMany(mappedBy = "halls")
     private List<HallImages> hallImagesList;
 
     @ElementCollection
-    private List<HallDetails> hallDetailsList;
+    private List<String> hallAmenitiesList;
 
-    @ElementCollection
-    private List<HallAmenities> hallAmenitiesList;
-
-    @ElementCollection
-    private List<UserActions> bookmaredHallList;
-
-    @ElementCollection
-    private List<UserActions> reservedHallList;
+    @ManyToMany
+    private List<FavoriteHalls> favoriteHallsList;
 
     @ManyToOne
     private Users users;

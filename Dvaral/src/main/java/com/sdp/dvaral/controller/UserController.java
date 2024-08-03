@@ -2,7 +2,6 @@ package com.sdp.dvaral.controller;
 
 import com.sdp.dvaral.model.Users;
 import com.sdp.dvaral.service.UserService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
