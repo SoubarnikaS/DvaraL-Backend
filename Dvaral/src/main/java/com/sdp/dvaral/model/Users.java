@@ -28,7 +28,8 @@ public class Users {
     private String password;
     private String userRole;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users")
+    @JsonIgnore
     private List<BookingDetails> bookingDetails;
 
     @OneToMany(mappedBy = "users")

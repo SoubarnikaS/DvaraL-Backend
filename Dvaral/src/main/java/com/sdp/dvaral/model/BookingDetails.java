@@ -1,5 +1,6 @@
 package com.sdp.dvaral.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,9 +33,11 @@ public class BookingDetails {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+//    @JsonIgnore
     private Users users;
 
     @ManyToOne
     @JoinColumn(name = "hall_id")
+//    @JsonIgnore
     private Halls halls;
 }

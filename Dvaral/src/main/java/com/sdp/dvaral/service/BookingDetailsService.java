@@ -8,6 +8,8 @@ import com.sdp.dvaral.repository.BookingDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BookingDetailsService {
 
@@ -30,5 +32,10 @@ public class BookingDetailsService {
         bookingDetails.setHalls(hallObj);
 
         return bookingDetailsRepository.save(bookingDetails);
+    }
+
+    public List<BookingDetails> getBookingDetailsForUser(Long userID) {
+
+        return bookingDetailsRepository.findByUsers_UserID(userID);
     }
 }

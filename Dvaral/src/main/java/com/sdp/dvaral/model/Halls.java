@@ -1,6 +1,7 @@
 package com.sdp.dvaral.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,7 +40,8 @@ public class Halls {
     @ManyToOne
     private Users users;
 
-    @OneToMany(mappedBy = "halls", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "halls")
+    @JsonIgnore
     private List<BookingDetails> bookingDetailsList;
 
 
