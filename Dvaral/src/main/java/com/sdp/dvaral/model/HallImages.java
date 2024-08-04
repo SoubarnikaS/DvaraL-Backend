@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,6 +24,4 @@ public class HallImages {
     @ManyToOne
     private Halls halls;
 
-    public HallImages(String s) {
-    }
 }
