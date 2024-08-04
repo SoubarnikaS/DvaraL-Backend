@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookingID;
@@ -26,11 +27,14 @@ public class BookingDetails {
     private int noOfGuest;
     private String eventType;
     private String specialRequests;
+    private String bookingStatus;
 
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private Users users;
 
     @ManyToOne
+    @JoinColumn(name = "hall_id")
     private Halls halls;
 }
