@@ -1,8 +1,6 @@
 package com.sdp.dvaral.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.sdp.dvaral.model.HallImages;
+
 import com.sdp.dvaral.model.Halls;
 import com.sdp.dvaral.service.HallService;
 import com.sdp.dvaral.service.ImageService;
@@ -11,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("api/v1/halls")
@@ -26,34 +25,85 @@ public class HallController {
     @Autowired
     private ImageService imageService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
 
-    @PostMapping(value = "/add-halls", consumes = {"multipart/form-data"})
-    public ResponseEntity<?> addHallDetails(@RequestPart ("formData") String formData, @RequestPart ("files") MultipartFile files) {
-
+    @PostMapping("/add-halls/{userID}")
+    public ResponseEntity<String> addHallDetails(@RequestBody Halls halls, @PathVariable Long userID){
         try{
 
-            objectMapper.registerModule(new JavaTimeModule());
+            Halls hallObj = hallService.addHallDetails(halls, userID);
+            return new ResponseEntity<>("Hall details added successfully with ID : " + hallObj.getHallID(), HttpStatus.CREATED);
+        }catch (Exception e){
 
-            Halls hallObj = objectMapper.readValue(formData, Halls.class);
+            log.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-            Halls hallResponse = hallService.addHallDetails(hallObj);
 
-            imageService.uploadImage(files, hallResponse);
+    @GetMapping("/fetch/all-halls")
+    public ResponseEntity< List<Halls> > fetchAllHalls(){
+        try{
 
-            return new ResponseEntity<>("Hall details added successfully with ID : " + hallResponse.getHallID(), HttpStatus.CREATED);
+            List<Halls> hallDetailsList = hallService.getAllHallDetails();
+            log.info("fetching details");
+
+            return new ResponseEntity<>(hallDetailsList, HttpStatus.OK);
 
         }catch (Exception e){
 
             log.error(e.getMessage());
-            return new ResponseEntity<>("Error in adding hall details : {}" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
-    @GetMapping("/hall/{hallId}")
-    public List<HallImages> getImagesByHallId(@PathVariable Long hallId) {
-        return imageService.getImagesByHallId(hallId);
+    @GetMapping("/fetch/{hallID}")
+    public ResponseEntity<Halls> fetchHallDetails(@PathVariable Long hallID){
+        try{
+
+            Optional<Halls> hallObj = hallService.getHallDetailsBYID(hallID);
+
+            return hallObj.map(halls -> new ResponseEntity<>(halls, HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+
+        } catch (Exception e){
+
+            log.error(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+    @PutMapping("/edit/hall/{hallID}")
+    public ResponseEntity<?> editHallDetails(@RequestBody Halls halls, @PathVariable Long hallID){
+        try{
+
+            Optional<Halls> hallObj = hallService.editHallDetails(halls, hallID);
+            return new ResponseEntity<>(hallObj.get(), HttpStatus.OK);
+        } catch (Exception e){
+
+            log.error(e.getMessage());
+            return new ResponseEntity<>("Not found", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @DeleteMapping("/delete/hall/{hallID}")
+    public ResponseEntity<String> deleteHallDetails(@PathVariable Long hallID){
+
+        try{
+
+            Boolean response = hallService.deleteHallDetails(hallID);
+
+            if(response)
+                return new ResponseEntity<>("Hall details deleted successfully", HttpStatus.OK);
+            else
+                return new ResponseEntity<>("Hall details not deleted successfully", HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e){
+
+            log.error(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
 }

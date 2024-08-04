@@ -1,5 +1,7 @@
 package com.sdp.dvaral.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +33,8 @@ public class Users {
     @OneToMany(mappedBy = "users")
     private List<Reviews> reviews;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "users")
+    @JsonBackReference
     private List<FavoriteHalls> favoriteHalls;
 
 

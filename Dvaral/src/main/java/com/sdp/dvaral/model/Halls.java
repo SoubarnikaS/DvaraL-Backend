@@ -1,5 +1,8 @@
 package com.sdp.dvaral.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,14 +30,13 @@ public class Halls {
     private int capacity;
     private double hallPrice;
 
-    @OneToMany(mappedBy = "halls")
-    private List<HallImages> hallImagesList;
 
     @ElementCollection
     private List<String> hallAmenitiesList;
 
-    @ManyToMany
-    private List<FavoriteHalls> favoriteHallsList;
+    @OneToMany(mappedBy = "hall")
+    @JsonBackReference
+    private List<FavoriteHalls> favoriteHalls;
 
     @ManyToOne
     private Users users;
